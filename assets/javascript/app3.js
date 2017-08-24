@@ -23,7 +23,8 @@ var quiz = [
 			{answer: "Clear Sheet Styles", isCorrect: false},
 
 		],
-		correct: "A"
+		correct: "A",
+		answerDefinition: "The correct answer was A, because CSS stands for Cascading Style Sheets.<br/>For more information please use your GoogleFu. (or <a href=\"https://www.w3schools.com/css/css_intro.asp\" target=\"_blank\">click here</a>)"
 	},
 	{
 		question: "When was Javascript created?",
@@ -34,7 +35,8 @@ var quiz = [
 			{answer: "1995", isCorrect: true},
 
 		],
-		correct: "D"
+		correct: "D",
+		answerDefinition: "JavaScript was in fact created in 1995."
 	},
 	{
 		question: "What does DOM mean?",
@@ -45,7 +47,8 @@ var quiz = [
 			{answer: "Document Observation Manager", isCorrect: false},
 
 		],
-		correct: "B"
+		correct: "B",
+		answerDefinition: "DOM stands for Document Object Model."
 	},
 	{
 		question: "What does a class and ID start with?",
@@ -56,8 +59,10 @@ var quiz = [
 			{answer: "# = class & ^ = ID", isCorrect: false},
 
 		],
-		correct: "C"
+		correct: "C",
+		answerDefinition: "A Class is denoted by \".\" and an ID is denoted by \"#\""
 	}
+	//This is intentionally left here for ease of replication for questions
 	// {
 	// 	question: "When was Javascript created?",
 	// 	answer: [
@@ -73,27 +78,19 @@ var quiz = [
 //console.log(quiz[2].answer[1].isCorrect); this goes to the 3rd Question and gets whether the second answer is true or false
 
 //variables for time, questions, etc..
-var i = questionsAsked = answersRight = answersWrong = timeInterval = timeAnswerInterval = answerTime = timing = 0;
+var i = newTime = answersNotAnswered = questionsAsked = answersRight = answersWrong = timeInterval = timeAnswerInterval = answerTime = timing = 0;
 var firstThrough = true;
 
 //reset has all values and then startTrivia to run the entire game
 function reset() {
-	i = questionsAsked = answersRight = answersWrong = timeInterval = 0;
+	i = newTime = answersNotAnswered = questionsAsked = answersRight = answersWrong = timeInterval = 0;
 	answerTime = 5;
 	timing = 1;
 	$("#timing").text(answerTime);
 	$("#theScores").hide();
 	startTrivia();
-	firstThrough = true;
 }
-//timer with timer parameter input
-// function startTime() {
-// 	timeInterval = setInterval(counter,1000);
-// }
 
-// function startAnswerTime() {
-// 	timeAnswerInterval = setInterval(endChecker, 3000);
-// }
 //theTimer is the one source for all timing functions, so that it has easy of start and stop
 function theTimer(x) {
 	timeInterval = setInterval(function(){
@@ -101,6 +98,7 @@ function theTimer(x) {
 			endChecker();
 		}else{
 			counter();
+			answerCheck();
 		}
 	},x);	
 }
@@ -113,118 +111,55 @@ function stopTimer(){
 function resetDuringTrivia() {
 	answerTime = 5;
 	timing = 1;
+	$("#wrongAnswer").hide();
+	$("#rightAnswer").hide();
+	$("#timeAnswer").hide();
 	$("#timing").text(answerTime)
-	firstThrough = true;
 }
 
-function counter() {
-	var newTime = answerTime - timing;
-	$("#timing").text(newTime);
-	timing++;
-	// console.log("In the counter");
-	// console.log(newTime);
+function answerCheck() {
 	if(newTime <= 0){
+		stopTimer();
 		console.log("Inside time up?!?");
 		clearInterval(timeInterval);
 		$("#triviaQuestion").hide();
 		$("#triviaAnswer").show();
+		$("#timeAnswer").show();
+		$("#theAnswer").html(quiz[i].answerDefinition);
 		theTimer(3000);
-		answersWrong++;
+		answersNotAnswered++;
 		questionsAsked++;
-	}else if(newTime > 0 && firstThrough) {
-		// $(".answer").on("click",function(){
-		// 	console.log(this.value);
-		// 	if(this.value === quiz[i].answer)
-		// 	{
-		// 		console.log("clicked Right");
-		// 		answersRight++;
-		// 	}else{
-		// 		console.log("clicked Wrong");
-		// 		answersWrong++;
-		// 	}
-		// });
-		$("#answerA").on("click",function(){
-			if(quiz[i].correct === "A"){
-				console.log("Clicked Letter A");
-				console.log("Quiz Value of Correct: " + quiz[i].correct);
-				answersRight++;
-				questionsAsked++;
-				$("#triviaQuestion").hide();
-				$("#triviaAnswer").show();	
-				stopTimer();			
-				theTimer(3000);
-			}else{
-				console.log("Clicked Letter A");
-				console.log("Quiz Value of Correct: " + quiz[i].correct);
-				answersWrong++;
-				questionsAsked++;
-				$("#triviaQuestion").hide();
-				$("#triviaAnswer").show();
-				stopTimer();			
-				theTimer(3000);
-			}
-		});
-		$("#answerB").on("click",function(){
-			if(quiz[i].correct === "B"){
-				console.log("Clicked Letter B");
-				console.log("Quiz Value of Correct: " + quiz[i].correct);
-				answersRight++;
-				questionsAsked++;
-				$("#triviaQuestion").hide();
-				$("#triviaAnswer").show();
-				stopTimer();			
-				theTimer(3000);
-			}else{
-				console.log("Clicked Letter B");
-				console.log("Quiz Value of Correct: " + quiz[i].correct);
-				answersWrong++;
-				questionsAsked++;
-				$("#triviaQuestion").hide();
-				$("#triviaAnswer").show();
-				stopTimer();			
-				theTimer(3000);
-			}
-		});
-		$("#answerC").on("click",function(){
-			if(quiz[i].correct === "C"){
-				console.log("Clicked Letter C");
-				console.log("Quiz Value of Correct: " + quiz[i].correct);
-				answersRight++;
-				questionsAsked++;
-				stopTimer();			
-				theTimer(3000);
-			}else{
-				console.log("Clicked Letter C");
-				console.log("Quiz Value of Correct: " + quiz[i].correct);
-				answersWrong++;
-				questionsAsked++;
-				stopTimer();			
-				theTimer(3000);
-			}
-		});
-		$("#answerD").on("click",function(){
-			if(quiz[i].correct === "D"){
-				console.log("Clicked Letter D");
-				console.log("Quiz Value of Correct: " + quiz[i].correct);
-				answersRight++;
-				questionsAsked++;
-				stopTimer();			
-				theTimer(3000);
-			}else{
-				console.log("Clicked Letter D");
-				console.log("Quiz Value of Correct: " + quiz[i].correct);
-				answersWrong++;
-				questionsAsked++;
-				stopTimer();			
-				theTimer(3000);
-			}
-		});
+	}else if(newTime > 0) {
+		var answerValue = $(this).attr("value");
+		console.log("Answer Value:" + answerValue);
+		if(answerValue === quiz[i].correct){
+			stopTimer();
+			answersRight++;
+			questionsAsked++;
+			$("#triviaQuestion").hide();
+			$("#triviaAnswer").show();
+			$("#rightAnswer").show();
+			$("#theAnswer").html(quiz[i].answerDefinition);
+			theTimer(3000);
+			console.log("You got the right answer! (in new answerCheck function)");
+		}else if(answerValue !== quiz[i].correct && answerValue) {
+			stopTimer();
+			answersWrong++;
+			questionsAsked++;
+			$("#triviaQuestion").hide();
+			$("#triviaAnswer").show();
+			$("#wrongAnswer").show();
+			$("#theAnswer").html(quiz[i].answerDefinition);
+			theTimer(3000);
+			console.log("You got the wrong answer! (in new answerCheck function)");
+		}
 	}
-	firstThrough = false;
-	// }else if(questionsAsked === quiz.length-1){
-	// 	clearInterval(timeInterval);
-	// 	theEndIsNear();
-	// }
+}
+
+function counter() {
+	newTime = answerTime - timing;
+	$("#timing").text(newTime);
+	timing++;
 }
 
 
@@ -243,16 +178,8 @@ function startTrivia() {
 	theTimer(1000);
 }
 
-// function stopTime() {
-// 	clearInterval(timeInterval);
-// }
-
-// function stopAnswerTime() {
-// 	clearInterval(timeAnswerInterval);
-// }
-
 function endChecker() {
-	if(questionsAsked >= quiz.length+1){
+	if(questionsAsked >= quiz.length){
 		stopTimer();
 		theEndIsNear();
 	}else{
@@ -272,9 +199,10 @@ function theEndIsNear() {
 	$("#theScores").show();
 	$("#answersRight").text(answersRight);
 	$("#answersWrong").text(answersWrong);
+	$("#notAnswered").text(answersNotAnswered);
 	$("#questionsAsked").text(questionsAsked);
 }
 
 reset(); //use as the starter of the game.. this way it is always reset
-
+$(document).on("click", ".answer", answerCheck);
 });

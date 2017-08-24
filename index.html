@@ -10,7 +10,7 @@
 		.container-fluid{
 			text-align: center;
 		}
-		#triviaAnswer, #theScores {
+		#triviaAnswer, #theScores, #wrongAnswer, #rightAnswer, #timeAnswer {
 			display: none;
 		}
 		.answer {
@@ -66,6 +66,16 @@
 						<h1>Coding Answers is Coded.</h1>
 					</div>
 				</div>
+				<div class="row">
+					<div class="col-xs-12">
+						<h3>
+						<span id="wrongAnswer">Sorry you got the answer wrong, but please learn from below:<br/></span>
+						<span id="rightAnswer">You got the answer right, but if you don't know why read below.<br/></span>
+						<span id="timeAnswer">Sorry you were not able to figure out the answer, please read below!<br/></span>
+						<span id="theAnswer"></span>
+						</h3>
+					</div>
+				</div>
 			</div>
 		</div>
 		<div class="row" id="theScores">
@@ -83,6 +93,11 @@
 				<div class="row">
 					<div class="col-xs-12">
 						Wrong Answers: <span id="answersWrong"></span>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12">
+						Not Answered: <span id="notAnswered"></span>
 					</div>
 				</div>
 				<div class="row">
