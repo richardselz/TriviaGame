@@ -1,3 +1,17 @@
+//Things to go back and change
+/* 
+	Make one timer, but call it with the different time alotments.. 
+	set an if statement within to turn on timer for certain calls, etc..
+	within if set true and set other to false and vis versa
+	if(!timerOne){
+	
+	timeOne = true;
+	}else{
+	
+	timerOne = false;
+	}
+*/
+
 $(document).ready(function(){
 var quiz = [
 	{
@@ -43,7 +57,7 @@ var quiz = [
 
 		],
 		correct: "C"
-	},
+	}
 	// {
 	// 	question: "When was Javascript created?",
 	// 	answer: [
@@ -60,7 +74,9 @@ var quiz = [
 
 //variables for time, questions, etc..
 var i = questionsAsked = answersRight = answersWrong = timeInterval = timeAnswerInterval = answerTime = timing = 0;
+var firstThrough = true;
 
+//reset has all values and then startTrivia to run the entire game
 function reset() {
 	i = questionsAsked = answersRight = answersWrong = timeInterval = 0;
 	answerTime = 5;
@@ -68,12 +84,14 @@ function reset() {
 	$("#timing").text(answerTime);
 	$("#theScores").hide();
 	startTrivia();
+	firstThrough = true;
 }
 
 function resetDuringTrivia() {
 	answerTime = 5;
 	timing = 1;
-	$("#timing").text(answerTime);
+	$("#timing").text(answerTime)
+	firstThrough = true;;
 }
 
 function counter() {
@@ -83,13 +101,14 @@ function counter() {
 	// console.log("In the counter");
 	// console.log(newTime);
 	if(newTime <= 0){
+		console.log("Inside time up?!?");
 		clearInterval(timeInterval);
 		$("#triviaQuestion").hide();
 		$("#triviaAnswer").show();
 		startAnswerTime();
 		answersWrong++;
 		questionsAsked++;
-	}else if(newTime > 0) {
+	}else if(newTime > 0 && firstThrough) {
 		// $(".answer").on("click",function(){
 		// 	console.log(this.value);
 		// 	if(this.value === quiz[i].answer)
@@ -103,33 +122,82 @@ function counter() {
 		// });
 		$("#answerA").on("click",function(){
 			if(quiz[i].correct === "A"){
+				console.log("Clicked Letter A");
+				console.log("Quiz Value of Correct: " + quiz[i].correct);
 				answersRight++;
+				questionsAsked++;
+				stopTime();
+				$("#triviaQuestion").hide();
+				$("#triviaAnswer").show();				
+				startAnswerTime();
 			}else{
+				console.log("Clicked Letter A");
+				console.log("Quiz Value of Correct: " + quiz[i].correct);
 				answersWrong++;
+				questionsAsked++;
+				stopTime();
+				$("#triviaQuestion").hide();
+				$("#triviaAnswer").show();
+				startAnswerTime();
 			}
 		});
 		$("#answerB").on("click",function(){
 			if(quiz[i].correct === "B"){
+				console.log("Clicked Letter B");
+				console.log("Quiz Value of Correct: " + quiz[i].correct);
 				answersRight++;
+				questionsAsked++;
+				stopTime();
+				$("#triviaQuestion").hide();
+				$("#triviaAnswer").show();
+				startAnswerTime();
 			}else{
+				console.log("Clicked Letter B");
+				console.log("Quiz Value of Correct: " + quiz[i].correct);
 				answersWrong++;
+				questionsAsked++;
+				stopTime();
+				$("#triviaQuestion").hide();
+				$("#triviaAnswer").show();
+				startAnswerTime();
 			}
 		});
 		$("#answerC").on("click",function(){
 			if(quiz[i].correct === "C"){
+				console.log("Clicked Letter C");
+				console.log("Quiz Value of Correct: " + quiz[i].correct);
 				answersRight++;
+				questionsAsked++;
+				stopTime();
+				startAnswerTime();
 			}else{
+				console.log("Clicked Letter C");
+				console.log("Quiz Value of Correct: " + quiz[i].correct);
 				answersWrong++;
+				questionsAsked++;
+				stopTime();
+				startAnswerTime();
 			}
 		});
 		$("#answerD").on("click",function(){
 			if(quiz[i].correct === "D"){
+				console.log("Clicked Letter D");
+				console.log("Quiz Value of Correct: " + quiz[i].correct);
 				answersRight++;
+				questionsAsked++;
+				stopTime();
+				startAnswerTime();
 			}else{
+				console.log("Clicked Letter D");
+				console.log("Quiz Value of Correct: " + quiz[i].correct);
 				answersWrong++;
+				questionsAsked++;
+				stopTime();
+				startAnswerTime();
 			}
 		});
 	}
+	firstThrough = false;
 	// }else if(questionsAsked === quiz.length-1){
 	// 	clearInterval(timeInterval);
 	// 	theEndIsNear();
@@ -146,8 +214,8 @@ function startAnswerTime() {
 }
 
 function startTrivia() {
-	
-	clearInterval(timeAnswerInterval);
+	console.log("The value of I is: " + i);
+	stopAnswerTime();
 	$("#triviaQuestion").show();
 	$("#triviaAnswer").hide();
 	$("#question").html(quiz[i].question);
@@ -155,26 +223,41 @@ function startTrivia() {
 	$("#answerB").text(quiz[i].answer[1].answer);
 	$("#answerC").text(quiz[i].answer[2].answer);
 	$("#answerD").text(quiz[i].answer[3].answer);
-	i++;
 	resetDuringTrivia();
 	startTime();
 }
 
+function stopTime() {
+	clearInterval(timeInterval);
+}
+
+function stopAnswerTime() {
+	clearInterval(timeAnswerInterval);
+}
+
 function endChecker() {
-	if(questionsAsked === quiz.length){
-		clearInterval(timeInterval);
-		clearInterval(timeAnswerInterval);
+	if(questionsAsked >= quiz.length+1){
+		stopTime();
+		stopAnswerTime();
 		theEndIsNear();
 	}else{
+		console.log("After 4 why am I still going?");
+		i++;
 		startTrivia();
 	}
 }
 
 function theEndIsNear() {
 	console.log("Within the END!");
+	console.log(i);
+	clearInterval(timeAnswerInterval);
+	clearInterval(timeInterval);
 	$("#triviaQuestion").hide();
 	$("#triviaAnswer").hide();
 	$("#theScores").show();
+	$("#answersRight").text(answersRight);
+	$("#answersWrong").text(answersWrong);
+	$("#questionsAsked").text(questionsAsked);
 }
 
 reset(); //use as the starter of the game.. this way it is always reset
