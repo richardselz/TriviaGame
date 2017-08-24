@@ -86,12 +86,35 @@ function reset() {
 	startTrivia();
 	firstThrough = true;
 }
+//timer with timer parameter input
+// function startTime() {
+// 	timeInterval = setInterval(counter,1000);
+// }
 
+// function startAnswerTime() {
+// 	timeAnswerInterval = setInterval(endChecker, 3000);
+// }
+//theTimer is the one source for all timing functions, so that it has easy of start and stop
+function theTimer(x) {
+	timeInterval = setInterval(function(){
+		if(x > 1000){ //calls counter
+			endChecker();
+		}else{
+			counter();
+		}
+	},x);	
+}
+
+//depending on the time
+function stopTimer(){
+	clearInterval(timeInterval);
+}
+//Resets all the variables needed to do a reliable countdown for each Question
 function resetDuringTrivia() {
 	answerTime = 5;
 	timing = 1;
 	$("#timing").text(answerTime)
-	firstThrough = true;;
+	firstThrough = true;
 }
 
 function counter() {
@@ -105,7 +128,7 @@ function counter() {
 		clearInterval(timeInterval);
 		$("#triviaQuestion").hide();
 		$("#triviaAnswer").show();
-		startAnswerTime();
+		theTimer(3000);
 		answersWrong++;
 		questionsAsked++;
 	}else if(newTime > 0 && firstThrough) {
@@ -126,19 +149,19 @@ function counter() {
 				console.log("Quiz Value of Correct: " + quiz[i].correct);
 				answersRight++;
 				questionsAsked++;
-				stopTime();
 				$("#triviaQuestion").hide();
-				$("#triviaAnswer").show();				
-				startAnswerTime();
+				$("#triviaAnswer").show();	
+				stopTimer();			
+				theTimer(3000);
 			}else{
 				console.log("Clicked Letter A");
 				console.log("Quiz Value of Correct: " + quiz[i].correct);
 				answersWrong++;
 				questionsAsked++;
-				stopTime();
 				$("#triviaQuestion").hide();
 				$("#triviaAnswer").show();
-				startAnswerTime();
+				stopTimer();			
+				theTimer(3000);
 			}
 		});
 		$("#answerB").on("click",function(){
@@ -147,19 +170,19 @@ function counter() {
 				console.log("Quiz Value of Correct: " + quiz[i].correct);
 				answersRight++;
 				questionsAsked++;
-				stopTime();
 				$("#triviaQuestion").hide();
 				$("#triviaAnswer").show();
-				startAnswerTime();
+				stopTimer();			
+				theTimer(3000);
 			}else{
 				console.log("Clicked Letter B");
 				console.log("Quiz Value of Correct: " + quiz[i].correct);
 				answersWrong++;
 				questionsAsked++;
-				stopTime();
 				$("#triviaQuestion").hide();
 				$("#triviaAnswer").show();
-				startAnswerTime();
+				stopTimer();			
+				theTimer(3000);
 			}
 		});
 		$("#answerC").on("click",function(){
@@ -168,15 +191,15 @@ function counter() {
 				console.log("Quiz Value of Correct: " + quiz[i].correct);
 				answersRight++;
 				questionsAsked++;
-				stopTime();
-				startAnswerTime();
+				stopTimer();			
+				theTimer(3000);
 			}else{
 				console.log("Clicked Letter C");
 				console.log("Quiz Value of Correct: " + quiz[i].correct);
 				answersWrong++;
 				questionsAsked++;
-				stopTime();
-				startAnswerTime();
+				stopTimer();			
+				theTimer(3000);
 			}
 		});
 		$("#answerD").on("click",function(){
@@ -185,15 +208,15 @@ function counter() {
 				console.log("Quiz Value of Correct: " + quiz[i].correct);
 				answersRight++;
 				questionsAsked++;
-				stopTime();
-				startAnswerTime();
+				stopTimer();			
+				theTimer(3000);
 			}else{
 				console.log("Clicked Letter D");
 				console.log("Quiz Value of Correct: " + quiz[i].correct);
 				answersWrong++;
 				questionsAsked++;
-				stopTime();
-				startAnswerTime();
+				stopTimer();			
+				theTimer(3000);
 			}
 		});
 	}
@@ -204,18 +227,11 @@ function counter() {
 	// }
 }
 
-//timer with timer parameter input
-function startTime() {
-	timeInterval = setInterval(counter,1000);
-}
 
-function startAnswerTime() {
-	timeAnswerInterval = setInterval(endChecker, 3000);
-}
 
 function startTrivia() {
 	console.log("The value of I is: " + i);
-	stopAnswerTime();
+	stopTimer();
 	$("#triviaQuestion").show();
 	$("#triviaAnswer").hide();
 	$("#question").html(quiz[i].question);
@@ -224,21 +240,20 @@ function startTrivia() {
 	$("#answerC").text(quiz[i].answer[2].answer);
 	$("#answerD").text(quiz[i].answer[3].answer);
 	resetDuringTrivia();
-	startTime();
+	theTimer(1000);
 }
 
-function stopTime() {
-	clearInterval(timeInterval);
-}
+// function stopTime() {
+// 	clearInterval(timeInterval);
+// }
 
-function stopAnswerTime() {
-	clearInterval(timeAnswerInterval);
-}
+// function stopAnswerTime() {
+// 	clearInterval(timeAnswerInterval);
+// }
 
 function endChecker() {
 	if(questionsAsked >= quiz.length+1){
-		stopTime();
-		stopAnswerTime();
+		stopTimer();
 		theEndIsNear();
 	}else{
 		console.log("After 4 why am I still going?");
