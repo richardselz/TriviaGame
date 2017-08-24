@@ -1,17 +1,3 @@
-//Things to go back and change
-/* 
-	Make one timer, but call it with the different time alotments.. 
-	set an if statement within to turn on timer for certain calls, etc..
-	within if set true and set other to false and vis versa
-	if(!timerOne){
-	
-	timeOne = true;
-	}else{
-	
-	timerOne = false;
-	}
-*/
-
 $(document).ready(function(){
 var quiz = [
 	{
@@ -75,8 +61,6 @@ var quiz = [
 	// }
 ];
 
-//console.log(quiz[2].answer[1].isCorrect); this goes to the 3rd Question and gets whether the second answer is true or false
-
 //variables for time, questions, etc..
 var i = newTime = answersNotAnswered = questionsAsked = answersRight = answersWrong = timeInterval = timeAnswerInterval = answerTime = timing = 0;
 var firstThrough = true;
@@ -84,7 +68,7 @@ var firstThrough = true;
 //reset has all values and then startTrivia to run the entire game
 function reset() {
 	i = newTime = answersNotAnswered = questionsAsked = answersRight = answersWrong = timeInterval = 0;
-	answerTime = 5;
+	answerTime = 25;
 	timing = 1;
 	$("#timing").text(answerTime);
 	$("#theScores").hide();
@@ -109,7 +93,7 @@ function stopTimer(){
 }
 //Resets all the variables needed to do a reliable countdown for each Question
 function resetDuringTrivia() {
-	answerTime = 5;
+	answerTime = 25;
 	timing = 1;
 	$("#wrongAnswer").hide();
 	$("#rightAnswer").hide();
@@ -120,7 +104,6 @@ function resetDuringTrivia() {
 function answerCheck() {
 	if(newTime <= 0){
 		stopTimer();
-		console.log("Inside time up?!?");
 		clearInterval(timeInterval);
 		$("#triviaQuestion").hide();
 		$("#triviaAnswer").show();
@@ -131,7 +114,6 @@ function answerCheck() {
 		questionsAsked++;
 	}else if(newTime > 0) {
 		var answerValue = $(this).attr("value");
-		console.log("Answer Value:" + answerValue);
 		if(answerValue === quiz[i].correct){
 			stopTimer();
 			answersRight++;
@@ -141,7 +123,6 @@ function answerCheck() {
 			$("#rightAnswer").show();
 			$("#theAnswer").html(quiz[i].answerDefinition);
 			theTimer(3000);
-			console.log("You got the right answer! (in new answerCheck function)");
 		}else if(answerValue !== quiz[i].correct && answerValue) {
 			stopTimer();
 			answersWrong++;
@@ -151,7 +132,6 @@ function answerCheck() {
 			$("#wrongAnswer").show();
 			$("#theAnswer").html(quiz[i].answerDefinition);
 			theTimer(3000);
-			console.log("You got the wrong answer! (in new answerCheck function)");
 		}
 	}
 }
@@ -162,10 +142,7 @@ function counter() {
 	timing++;
 }
 
-
-
 function startTrivia() {
-	console.log("The value of I is: " + i);
 	stopTimer();
 	$("#triviaQuestion").show();
 	$("#triviaAnswer").hide();
@@ -183,15 +160,13 @@ function endChecker() {
 		stopTimer();
 		theEndIsNear();
 	}else{
-		console.log("After 4 why am I still going?");
 		i++;
 		startTrivia();
 	}
 }
 
 function theEndIsNear() {
-	console.log("Within the END!");
-	console.log(i);
+
 	clearInterval(timeAnswerInterval);
 	clearInterval(timeInterval);
 	$("#triviaQuestion").hide();
