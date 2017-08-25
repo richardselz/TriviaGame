@@ -1,0 +1,9 @@
+.container-fluid{
+	text-align: center;
+}
+#triviaAnswer, #theScores, #wrongAnswer, #rightAnswer, #timeAnswer {
+	display: none;
+}
+.answer, #resetGame {
+	cursor: pointer;
+}

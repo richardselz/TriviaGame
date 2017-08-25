@@ -180,4 +180,5 @@ function theEndIsNear() {
 
 reset(); //use as the starter of the game.. this way it is always reset
 $(document).on("click", ".answer", answerCheck);
+$(document).on("click", "#resetGame", reset);
 });
